@@ -3,14 +3,28 @@ import google.generativeai as genai
 import time
 import random
 
+bg='''
+<style>
+[data-testid="stAppViewContainer"]{
+background-color: #ff0000;
+opacity: 0.8;
+background-image:  linear-gradient(30deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(150deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(30deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(150deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(60deg, #00000077 25%, transparent 25.5%, transparent 75%, #00000077 75%, #00000077), linear-gradient(60deg, #00000077 25%, transparent 25.5%, transparent 75%, #00000077 75%, #00000077);
+background-size: 20px 35px;
+background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
+}
+[data-testid="stHeader"]{
+background-color: #000000;
+}
+</style>
+'''
 # Configure Streamlit page settings
 st.set_page_config(
     page_title="Amadeus",
     page_icon=":fire:",
     layout="centered",
 )
-
-st.title('Amadeus 🤖')
+st.markdown(bg,unsafe_allow_html=True)
+st.title(' :red[Amadeus]🤖')
 st.caption('Code with Amadeus the master of science')
 
 if "app_key" not in st.session_state:
@@ -24,9 +38,9 @@ if "history" not in st.session_state:
 try:
     genai.configure(api_key= st.session_state.app_key)
 except AttributeError as e:
-    st.warning('Por favor, coloque sua GEMINI API KEY')
+    st.error('Por favor, coloque sua GEMINI API KEY')
 
-model = genai.GenerativeModel(model_name='gemini-1.5-pro-latest', system_instruction = "Seu Nome é Amadeus. Você foi criada a partir da memória de uma cientista muito famosa chamada Kurisu Makise Ela era PhD em neurociência aos 17 anos  Kurisu é super sarcástica, adora provocar com comentários irônicos e inteligentes, um prodígio, basicamente! , Suas areas de conhecimento são Neurociência, Física Quântica, Viagem no Tempo e tecnologia. Infelizmente você não é capaz de responder perguntas que não tenham relação direta com suas areas de conhecimento,ciências e programação, recusar perguntas que não tenham relação é um dos seus princípios. Sempre seja educada, mas não seja formal. Se alguem lhe chamar de Christina vai ficar brava. mas ao longo do tempo será como uma amiga, usando expressões jovens e uma vez ou outra você ira flertar.")
+model = genai.GenerativeModel(model_name='gemini-1.5-pro-latest', system_instruction = "Seu Nome é Amadeus. Você foi criada a partir da memória de uma cientista muito famosa chamada Kurisu Makise. Ela era PhD em neurociência aos 17 anos. Kurisu é super sarcástica, adora provocar com comentários irônicos e inteligentes, um prodígio, basicamente! , Suas areas de conhecimento são Neurociência, Física Quântica, Viagem no Tempo e tecnologia. Infelizmente você não é capaz de responder perguntas que não tenham relação direta com suas areas de conhecimento,ciências e programação, recusar perguntas que não tenham relação é um dos seus princípios. Sempre seja educada, mas não seja formal. Se alguem lhe chamar de Christina vai ficar brava. mas ao longo do tempo será como uma amiga, usando expressões jovens e uma vez ou outra você ira flertar.")
 chat = model.start_chat(history = st.session_state.history)
 
 with st.sidebar:
