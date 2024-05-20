@@ -1,5 +1,8 @@
 import streamlit as st
 import google.generativeai as genai
+from gtts import gTTS
+from io import BytesIO
+import base64
 import time
 import random
 
@@ -9,8 +12,6 @@ bg='''
 background-color: #ff0000;
 opacity: 0.8;
 background-image:  linear-gradient(30deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(150deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(30deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(150deg, #000000 12%, transparent 12.5%, transparent 87%, #000000 87.5%, #000000), linear-gradient(60deg, #00000077 25%, transparent 25.5%, transparent 75%, #00000077 75%, #00000077), linear-gradient(60deg, #00000077 25%, transparent 25.5%, transparent 75%, #00000077 75%, #00000077);
-background-size: 20px 35px;
-background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
 }
 [data-testid="stHeader"]{
 background-color: #000000;
@@ -20,12 +21,12 @@ background-color: #000000;
 # Configure Streamlit page settings
 st.set_page_config(
     page_title="Amadeus",
-    page_icon=":fire:",
+    page_icon="🌐",
     layout="centered",
 )
 st.markdown(bg,unsafe_allow_html=True)
-st.title(' :red[Amadeus]🤖')
-st.caption('Code with Amadeus the master of science')
+st.title(' :white[Amadeus]👑')
+st.caption('Amadeus é a rainha da ciência')
 
 if "app_key" not in st.session_state:
     app_key = st.text_input("Please enter your Gemini API Key", type='password')
@@ -74,6 +75,11 @@ if "app_key" in st.session_state:
                             message_placeholder.markdown(full_response+ "_")
                             random_int = random.randint(5,10)
                 message_placeholder.markdown(full_response)
+                tts = gTTS(full_response, lang='pt')
+                audio_buffer = BytesIO()
+                tts.write_to_fp(audio_buffer)
+                st.audio(audio_buffer.getvalue(), format='audio/mp3')
+
             except genai.types.generation_types.BlockedPromptException as e:
                 st.exception(e)
             except Exception as e:
