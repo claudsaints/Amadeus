@@ -1,4 +1,3 @@
 streamlit
 google-generativeai
-gtts
-io.BytesIO
+gTTS==2.3.1
